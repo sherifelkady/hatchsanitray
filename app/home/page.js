@@ -8,7 +8,7 @@ export default function Home() {
     <section className="flex justify-between gap-4 px-28 mt-10 ">
       <Sidebar />
       {/* ===================== All Products =================== */}
-      <main className="w-5/6 bg-[#f9fafb] flex gap-2 py-4 px-4">
+      <main className="w-5/6 bg-[#f9fafb] flex gap-2 py-4 px-4 justify-between">
         <ProductsCard />
         <ProductsCard />
         <ProductsCard />
