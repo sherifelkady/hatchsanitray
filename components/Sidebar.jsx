@@ -11,7 +11,7 @@ export default function Sidebar() {
       <div className="mt-10 mb-4">
         <h3 className=" text-sm font-bold">MAIN</h3>
         <ul className="text-[15px] flex flex-col gap-2 mt-2 text-gray-500">
-          <li className="active  bg-blue-100 text-sky-800 bg-opacity-50 rounded-xs p-1">
+          <li className="active  bg-blue-100 text-sky-800 bg-opacity-50 rounded-sm p-2">
             Dashboard
           </li>
           <li>Services</li>
