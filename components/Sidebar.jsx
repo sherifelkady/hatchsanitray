@@ -1,9 +1,18 @@
 import React from "react";
 import Image from "next/image";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@radix-ui/react-accordion";
+import { BiCaretDown } from "react-icons/bi";
+import Link from "next/link";
 
-export default function Sidebar() {
+export default function Sidebar({ categories }) {
+  console.log("from sidebar this is the categories datata", categories);
   return (
-    <aside className="w-1/6 shadow-xs bg-white px-6 py-4 rounded">
+    <aside className="w-2/6 shadow-xs bg-white px-6 py-4 rounded">
       <div className="flex justify-center">
         <Image src="/images/logo.gif" width={100} height={100} alt="logo" />
       </div>
@@ -22,10 +31,26 @@ export default function Sidebar() {
       <div>
         <h3 className=" text-sm font-bold uppercase ">categories</h3>
         <ul className=" text-[15px] flex flex-col gap-2 mt-2 text-gray-500">
-          <li>Home</li>
-          <li>Products</li>
-          <li>Services</li>
-          <li>Contact</li>
+          <Accordion type="single" collapsible>
+            {categories?.data?.map((category) => (
+              <AccordionItem key={category.id} value={category.id}>
+                <AccordionTrigger className=" border-gray-200 flex justify-start items-center">
+                  <BiCaretDown />
+                  <h3 className="text-xs "> {category.name}</h3>
+                </AccordionTrigger>
+                <AccordionContent className="flex justify-start flex-col items-start">
+                  {category?.sub_categories?.map((subCategory) => (
+                    <Link
+                      key={subCategory.id}
+                      href={`/category/${subCategory.id}`}
+                    >
+                      {subCategory.name}
+                    </Link>
+                  ))}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </ul>
       </div>
     </aside>

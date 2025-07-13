@@ -4,14 +4,28 @@ import Sidebar from "@/components/Sidebar";
 import Image from "next/image";
 import React from "react";
 
-export default function Home() {
+export default async function Home() {
+  // ===================== get Categories ====================================
+  const API = process.env.API_URL;
+  console.log("API URL:", process.env.API_URL);
+  const categories = await fetch(`${API}categories?lang=en`, {
+    method: "GET",
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const categoriesData = await categories.json();
+
+  // ===================== get Categories End ================================
+
   return (
     <section className="flex justify-between gap-4 px-28 mt-10 ">
-      <Sidebar />
+      <Sidebar categories={categoriesData != null && categoriesData} />
       {/* ===================== All Products =================== */}
       <section className="flex-col gap-4">
         <StaticsCard />
-        <main className="w-5/6 bg-[#f9fafb] grid gap-2 py-4 px-4 grid-cols-4 justify-between ">
+        <main className="w-4/6 bg-[#f9fafb] grid gap-2 py-4 px-4 grid-cols-3 justify-between ">
           <ProductsCard />
           <ProductsCard />
           <ProductsCard />
