@@ -20,12 +20,12 @@ export default async function Home() {
   // ===================== get Categories End ================================
 
   return (
-    <section className="flex justify-between gap-4 px-28 mt-10 ">
+    <section className="flex justify-between gap-4 px-20 mt-10 ">
       <Sidebar categories={categoriesData != null && categoriesData} />
       {/* ===================== All Products =================== */}
-      <section className="flex-col gap-4">
+      <section className="flex-col gap-4 w-4/6">
         <StaticsCard />
-        <main className="w-4/6 bg-[#f9fafb] grid gap-2 py-4 px-4 grid-cols-3 justify-between ">
+        <main className="w-4/6 bg-[#f9fafb] grid gap-2 py-4 px-4 grid-cols-2 justify-between ">
           <ProductsCard />
           <ProductsCard />
           <ProductsCard />
