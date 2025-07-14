@@ -21,10 +21,10 @@ export default async function Home() {
   // ===================== get Categories End ================================
 
   return (
-    <section className="flex justify-between gap-4 px-20 mt-10 ">
+    <section className="flex lg:flex-row flex-col justify-between gap-4 px-15 mt-10 ">
       <Sidebar categories={categoriesData != null && categoriesData} />
       {/* ===================== All Products =================== */}
-      <section className="flex-col gap-4 w-[85%]">
+      <section className="flex-col gap-4 w-[82%]">
         <StaticsCard />
         <ProductsList />
       </section>
