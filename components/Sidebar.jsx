@@ -22,15 +22,28 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import Link from "next/link";
 import { Button } from "./ui/button";
 
-export default function Sidebar({ categories }) {
-  console.log("from sidebar this is the categories datata", categories);
+export default async function Sidebar() {
+  // ===================== get Categories ====================================
+  const API = process.env.API_URL;
+  console.log("API URL:", process.env.API_URL);
+  const categoriesData = await fetch(`${API}categories?lang=en`, {
+    method: "GET",
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const categories = await categoriesData.json();
+
+  // ===================== get Categories End ================================
+
   return (
     <>
-      <aside className="lg:w-[28%] w-full shadow-xs bg-white px-6 py-4 rounded">
+      <aside className="xl:w-[28%] w-full shadow-xs bg-white px-6 py-4 rounded">
         <div className="flex justify-center">
           <Image src="/images/logo.gif" width={100} height={100} alt="logo" />
         </div>
-        <Sheet className="hidden md:block ">
+        <Sheet className="block lg:hidden ">
           <SheetTrigger>Open</SheetTrigger>
           <SheetContent className="w-[400px] sm:w-[540px]">
             <SheetHeader>
@@ -43,7 +56,7 @@ export default function Sidebar({ categories }) {
           </SheetContent>
         </Sheet>
 
-        <div className="hidden md:block">
+        <div className="hidden xl:block">
           <h3 className=" text-sm font-bold uppercase ">MAIN</h3>
           <ul className="text-[15px] flex flex-col gap-2 mt-2 text-gray-500">
             <Link
