@@ -40,7 +40,7 @@ export default function MainProposalPage() {
   };
 
   const PDFDownloader = dynamic(
-    () => import("@/components/proposal/PdfDownloader"),
+    () => import("@/components/proposal/PdfDownloader.jsx"),
     {
       ssr: false,
     }
@@ -48,7 +48,7 @@ export default function MainProposalPage() {
   //========================================== Handlers End ===================================================
   return (
     <section className="flex justify-between gap-4 px-38 mt-10">
-      <Sidebar />
+      {/* <Sidebar /> */}
       <main className="bg-white w-5/6 p-5">
         <div className="head flex justify-between items-center py-4">
           <h1 className="text-2xl">New Proposal</h1>
@@ -86,7 +86,7 @@ export default function MainProposalPage() {
             </div>
             <Button
               className={"bg-sky-900 rounded-[4px]  px-8 py-3 cursor-pointer "}
-              onClick={handleFormSubmit}
+              onClick={(e) => handleFormSubmit(e)}
             >
               {" "}
               Save Proposal

@@ -26,7 +26,7 @@ export default async function Sidebar() {
   // ===================== get Categories ====================================
   const API = process.env.API_URL;
   console.log("API URL:", process.env.API_URL);
-  const categoriesData = await fetch(`${API}categories?lang=en`, {
+  const categoriesData = await fetch(`${API}/categories?lang=en`, {
     method: "GET",
     cache: "no-store",
     headers: {

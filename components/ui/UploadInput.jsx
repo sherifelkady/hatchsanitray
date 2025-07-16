@@ -45,7 +45,7 @@ export default function UploadInput() {
           id={inputId}
           type="file"
           className="hidden"
-          onChange={handleFileChange}
+          onChange={(e) => handleFileChange(e)}
         />
       </label>
 

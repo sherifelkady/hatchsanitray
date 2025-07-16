@@ -11,7 +11,7 @@ export default async function Home() {
       <Sidebar />
       {/* ===================== All Products =================== */}
       <section className="flex-col gap-4 w-[82%]">
-        <StaticsCard />
+        {/* <StaticsCard /> */}
         <ProductsList />
       </section>
     </section>

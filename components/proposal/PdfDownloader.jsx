@@ -9,7 +9,6 @@ export default function PdfDownloader() {
   return (
     <>
       <PDFDownloadLink
-        disabled={true}
         className="flex  text-white justify-center items-center gap-3 bg-sky-900 rounded-[4px] px-8 py-3 cursor-pointer"
         document={
           <ProposalPdfDoc
