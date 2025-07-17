@@ -1,4 +1,3 @@
-"use client";
 import Sidebar from "@/components/Sidebar";
 import { Button } from "@/components/ui/button";
 import { PiFilePdfLight } from "react-icons/pi";
@@ -18,5 +17,10 @@ import UploadInput from "@/components/ui/UploadInput";
 import MainProposalPage from "@/components/proposal/MainProposalPage";
 
 export default function page() {
-  return <MainProposalPage />;
+  return (
+    <section className="flex justify-between gap-4 px-38 mt-10">
+      <Sidebar />
+      <MainProposalPage />;
+    </section>
+  );
 }

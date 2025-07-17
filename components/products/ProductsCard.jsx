@@ -6,7 +6,7 @@ export default function ProductsCard({ product }) {
   const imgSrc = product?.image ? product?.image : "/images/not-found.png";
   return (
     <div className="bg-white rounded-xs   p-4 shadow-xs flex flex-col gap-4">
-      <div className="lg:w-[363px] w-full h-[363px] overflow-hidden relative ">
+      <div className="lg:w-full w-full h-[383px] overflow-hidden relative ">
         <Image
           src={imgSrc}
           fill={true}

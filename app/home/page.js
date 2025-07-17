@@ -2,6 +2,7 @@ import StaticsCard from "@/components/home/statics/StaticsCard";
 import ProductsCard from "@/components/products/ProductsCard";
 import ProductsList from "@/components/products/ProductsList";
 import Sidebar from "@/components/Sidebar";
+import TopBar from "@/components/TopBar";
 import Image from "next/image";
 import React from "react";
 
@@ -12,6 +13,7 @@ export default async function Home() {
       {/* ===================== All Products =================== */}
       <section className="flex-col gap-4 w-[82%]">
         {/* <StaticsCard /> */}
+        <TopBar />
         <ProductsList />
       </section>
     </section>
