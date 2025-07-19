@@ -1,9 +1,18 @@
+"use client";
 import Image from "next/image";
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { useStore } from "zustand";
+import { Proposals } from "@/store/proposals-store";
 
 export default function ProductsCard({ product }) {
   const imgSrc = product?.image ? product?.image : "/images/not-found.png";
+  const addProposal = Proposals((state) => state.addProposal);
+  //======================================= Handlers ===============================================
+  const addNewProposalHandler = () => {
+    addProposal({ ...product });
+  };
+  // ===================================== Handlers End ============================================
   return (
     <div className="bg-white rounded-xs   p-4 shadow-xs flex flex-col gap-4">
       <div className="lg:w-full w-full h-[383px] overflow-hidden relative ">
@@ -22,8 +31,11 @@ export default function ProductsCard({ product }) {
         Simple design with practical performance
       </p>
       <div className="flex justify-between items-center">
-        <span className="text-sky-500 ">Rs. 1000</span>
-        <Button className="bg-sky-600 rounded-[4px] p-5 cursor-pointer">
+        <span className="text-gray-500 ">Rs. 1000</span>
+        <Button
+          onClick={addNewProposalHandler}
+          className="bg-gray-600 rounded-[4px] p-5 cursor-pointer"
+        >
           Add to Proposal
         </Button>
       </div>

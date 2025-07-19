@@ -9,7 +9,7 @@ export default function PdfDownloader() {
   return (
     <>
       <PDFDownloadLink
-        className="flex  text-white justify-center items-center gap-3 bg-sky-900 rounded-[4px] px-8 py-3 cursor-pointer"
+        className="flex  text-white justify-center items-center gap-3 bg-gray-700 rounded-[4px] px-8 py-3 cursor-pointer hover:bg-slate-700"
         document={
           <ProposalPdfDoc
             proposalName={Proposals.getState().proposals[0]?.proposalName}

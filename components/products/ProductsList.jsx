@@ -7,7 +7,6 @@ export default function ProductsList({ products }) {
       {products?.map((product) => (
         <ProductsCard key={product.id} product={product} />
       ))}
-      <ProductsCard />
     </main>
   );
 }

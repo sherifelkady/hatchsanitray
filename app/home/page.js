@@ -11,7 +11,7 @@ export default async function Home() {
     <section className="flex lg:flex-row flex-col justify-between gap-4 px-15 mt-10 ">
       <Sidebar />
       {/* ===================== All Products =================== */}
-      <section className="flex-col gap-4 w-[82%]">
+      <section className="flex-col gap-4 xl:w-[82%] w-full">
         {/* <StaticsCard /> */}
         <TopBar />
         <ProductsList />

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Sidebar from "@/components/Sidebar";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,23 +20,39 @@ export default function MainProposalPage() {
   const [title, setTitle] = React.useState("");
   const [clientName, setClientName] = React.useState("");
   const [projectLogo, setProjectLogo] = React.useState(null);
-  const [companyLogo, setCompanyLogo] = React.useState(null);
+  const [clientLogo, setClientLogo] = React.useState(null);
   const [exportActive, setExportActive] = React.useState(false);
+  const [activeSubmit, setActiveSubmit] = React.useState(false);
   const addProposal = Proposals((state) => state.addProposal);
 
   //========================================== Handlers ===================================================
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (!title) return;
     addProposal({ proposalName: title, clientName: clientName });
     console.log("this is our state", Proposals.getState().proposals);
     // upload file in client
     const formData = new FormData();
-    formData.append("file", companyLogo);
+    formData.append("title", title);
+    formData.append("clientName", clientName);
+    formData.append("project_logo", projectLogo);
+    formData.append("client_logo", clientLogo);
     console.log("this is our formData", formData.getAll("file"));
     setExportActive(true);
-    setTitle("");
-    setClientName("");
+    const res = await fetch(process.env.NEXT_PUBLIC_API_URL + "proposals", {
+      method: "POST",
+      cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: formData,
+    });
+    const data = await res.json();
+    console.log("this is our data", data);
+    setActiveSubmit(false);
+    // setTitle("");
+    // setClientName("");
   };
 
   const PDFDownloader = dynamic(
@@ -45,9 +61,27 @@ export default function MainProposalPage() {
       ssr: false,
     }
   );
+
+  // === handle image selection ===
+  const handleClientLogoChange = (e) => {
+    setClientLogo(e.target.files[0]);
+  };
+
+  const handleProjectLogoChange = (e) => {
+    setProjectLogo(e.target.files[0]);
+  };
+  const handleSubmit = () => {
+    setActiveSubmit(true);
+  };
   //========================================== Handlers End ===================================================
+
+  useEffect(() => {
+    if (activeSubmit) {
+      handleFormSubmit();
+    }
+  }, [activeSubmit]);
   return (
-    <main className="bg-white w-5/6 p-5">
+    <main className="bg-white xl:w-full w-5/6 p-5">
       <div className="head flex justify-between items-center py-4">
         <h1 className="text-2xl">New Proposal</h1>
 
@@ -55,7 +89,10 @@ export default function MainProposalPage() {
       </div>
       {/* ================= Form ================= */}
       <div className="proposal-form">
-        <form className="flex flex-col gap-4 justify-center w-full">
+        <form
+          onSubmit={handleFormSubmit}
+          className="flex flex-col gap-4 justify-center w-full"
+        >
           <h4 className="text-lg">Project Details</h4>
           <div className="form-grid grid grid-cols-2 gap-4">
             <input
@@ -75,16 +112,17 @@ export default function MainProposalPage() {
           <div className="form-grid grid grid-cols-2 gap-4">
             <div className="flex flex-col gap-3">
               <h4>Project Logo</h4>
-              <UploadInput />
+              <input type="file" onChange={handleProjectLogoChange} />
             </div>
             <div className="flex flex-col gap-3">
-              <h4>Company Logo</h4>
-              <UploadInput />
+              <h4>Client Logo</h4>
+              {/* <UploadInput /> */}
+              <input type="file" onChange={handleClientLogoChange} />
             </div>
           </div>
           <Button
-            className={"bg-sky-900 rounded-[4px]  px-8 py-3 cursor-pointer "}
-            onClick={(e) => handleFormSubmit(e)}
+            className={"bg-gray-600 rounded-[4px]  px-8 py-3 cursor-pointer "}
+            type="submit"
           >
             {" "}
             Save Proposal

@@ -42,7 +42,9 @@ export default async function Sidebar() {
     <>
       <aside className="xl:w-[28%] relative w-full shadow-xs bg-white px-6 py-4 rounded">
         <div className="flex justify-center">
-          <Image src="/images/logo.gif" width={100} height={100} alt="logo" />
+          <Link href="/home">
+            <Image src="/images/logo.gif" width={100} height={100} alt="logo" />
+          </Link>
         </div>
         <Sheet>
           <SheetTrigger className="flex absolute top-12  items-center xl:hidden">
