@@ -7,10 +7,14 @@ import { Proposals } from "@/store/proposals-store";
 
 export default function ProductsCard({ product }) {
   const imgSrc = product?.image ? product?.image : "/images/not-found.png";
-  const addProposal = Proposals((state) => state.addProposal);
+  // const addProposal = Proposals((state) => state.addProposal);
+  const addProduct = Proposals((state) => state.addProduct);
+  const allProducts = Proposals((state) => state.products);
   //======================================= Handlers ===============================================
-  const addNewProposalHandler = () => {
-    addProposal({ ...product });
+  const addNewPorductHandler = () => {
+    addProduct({ ...product });
+    console.log("this is our product", product);
+    console.log("this is our products all", allProducts);
   };
   // ===================================== Handlers End ============================================
   return (
@@ -33,7 +37,7 @@ export default function ProductsCard({ product }) {
       <div className="flex justify-between items-center">
         <span className="text-gray-500 ">Rs. 1000</span>
         <Button
-          onClick={addNewProposalHandler}
+          onClick={addNewPorductHandler}
           className="bg-gray-600 rounded-[4px] p-5 cursor-pointer"
         >
           Add to Proposal

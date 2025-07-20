@@ -25,6 +25,7 @@ export default function MainProposalPage() {
   const [exportActive, setExportActive] = React.useState(false);
   const [activeSubmit, setActiveSubmit] = React.useState(false);
   const addProposal = Proposals((state) => state.addProposal);
+  const theProposalData = Proposals((state) => state.proposal);
   const ProposalsList = Proposals((state) => state.proposals);
   console.log("All Proposals", ProposalsList);
 
@@ -56,6 +57,7 @@ export default function MainProposalPage() {
       toast.success("Proposal added successfully");
       setExportActive(true);
       setActiveSubmit(false);
+      console.log("this is our theProposalData", theProposalData);
     } catch (err) {
       console.log(err);
       toast.error("Something went wrong");

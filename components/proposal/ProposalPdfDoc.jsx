@@ -11,15 +11,16 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function ProposalPdfDoc({ proposalName, clientName }) {
+export default function ProposalPdfDoc({ proposal }) {
+  console.log("this is proposal", proposal);
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.section}>
-          <Text>Name: {proposalName}</Text>
+          <Text>Name: {proposal?.project_name}</Text>
         </View>
         <View style={styles.section}>
-          <Text>Client: {clientName}</Text>
+          <Text>Client: {proposal?.client_name}</Text>
         </View>
       </Page>
     </Document>
