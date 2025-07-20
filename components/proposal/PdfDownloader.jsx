@@ -12,8 +12,8 @@ export default function PdfDownloader() {
         className="flex  text-white justify-center items-center gap-3 bg-gray-700 rounded-[4px] px-8 py-3 cursor-pointer hover:bg-slate-700"
         document={
           <ProposalPdfDoc
-            proposalName={Proposals.getState().proposals[0]?.proposalName}
-            clientName={Proposals.getState().proposals[0]?.clientName}
+            proposalName={Proposals.getState().proposals[0]?.project_name}
+            clientName={Proposals.getState().proposals[0]?.client_name}
           />
         }
         fileName="proposal_2.pdf"

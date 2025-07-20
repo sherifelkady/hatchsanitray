@@ -15,6 +15,7 @@ import {
 import UploadInput from "@/components/ui/UploadInput";
 import { Proposals } from "@/store/proposals-store";
 import dynamic from "next/dynamic";
+import { toast } from "sonner";
 
 export default function MainProposalPage() {
   const [title, setTitle] = React.useState("");
@@ -24,33 +25,54 @@ export default function MainProposalPage() {
   const [exportActive, setExportActive] = React.useState(false);
   const [activeSubmit, setActiveSubmit] = React.useState(false);
   const addProposal = Proposals((state) => state.addProposal);
+  const ProposalsList = Proposals((state) => state.proposals);
+  console.log("All Proposals", ProposalsList);
 
   //========================================== Handlers ===================================================
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (!title) return;
-    addProposal({ proposalName: title, clientName: clientName });
+
     console.log("this is our state", Proposals.getState().proposals);
     // upload file in client
     const formData = new FormData();
-    formData.append("title", title);
-    formData.append("clientName", clientName);
+    formData.append("project_name", title);
+    formData.append("client_name", clientName);
     formData.append("project_logo", projectLogo);
     formData.append("client_logo", clientLogo);
-    console.log("this is our formData", formData.getAll("file"));
-    setExportActive(true);
-    const res = await fetch(process.env.NEXT_PUBLIC_API_URL + "proposals", {
-      method: "POST",
-      cache: "no-store",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: formData,
-    });
-    const data = await res.json();
-    console.log("this is our data", data);
-    setActiveSubmit(false);
+    console.log("this is our formData", formData);
+    console.log("this our api", process.env.NEXT_PUBLIC_API_URL);
+
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}proposals`, {
+        method: "POST",
+        mode: "cors",
+        cache: "no-store",
+        body: formData,
+      });
+      const data = await res.json();
+      console.log("this is our data", data);
+      addProposal({ ...data.data });
+      toast.success("Proposal added successfully");
+      setExportActive(true);
+      setActiveSubmit(false);
+    } catch (err) {
+      console.log(err);
+      toast.error("Something went wrong");
+    }
+    // const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}proposals`, {
+    //   method: "POST",
+    //   mode: "cors",
+    //   cache: "no-store",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Accept: "application/json",
+    //   },
+    //   body: formData,
+    // });
+    // const data = await res.json();
+    // console.log("this is our data", data);
+
     // setTitle("");
     // setClientName("");
   };
@@ -85,12 +107,13 @@ export default function MainProposalPage() {
       <div className="head flex justify-between items-center py-4">
         <h1 className="text-2xl">New Proposal</h1>
 
-        <PDFDownloader />
+        {exportActive && <PDFDownloader exportActive={exportActive} />}
       </div>
       {/* ================= Form ================= */}
       <div className="proposal-form">
         <form
           onSubmit={handleFormSubmit}
+          encType="multipart/form-data"
           className="flex flex-col gap-4 justify-center w-full"
         >
           <h4 className="text-lg">Project Details</h4>
