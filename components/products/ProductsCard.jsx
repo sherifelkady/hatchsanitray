@@ -4,7 +4,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { useStore } from "zustand";
 import { Proposals } from "@/store/proposals-store";
-
+import { toast } from "sonner";
 export default function ProductsCard({ product }) {
   const imgSrc = product?.image ? product?.image : "/images/not-found.png";
   // const addProposal = Proposals((state) => state.addProposal);
@@ -13,6 +13,7 @@ export default function ProductsCard({ product }) {
   //======================================= Handlers ===============================================
   const addNewPorductHandler = () => {
     addProduct({ ...product });
+    toast.success("Product added successfully");
     console.log("this is our product", product);
     console.log("this is our products all", allProducts);
   };

@@ -16,6 +16,7 @@ import UploadInput from "@/components/ui/UploadInput";
 import { Proposals } from "@/store/proposals-store";
 import dynamic from "next/dynamic";
 import { toast } from "sonner";
+import Image from "next/image";
 
 export default function MainProposalPage() {
   const [title, setTitle] = React.useState("");
@@ -27,6 +28,7 @@ export default function MainProposalPage() {
   const addProposal = Proposals((state) => state.addProposal);
   const theProposalData = Proposals((state) => state.proposal);
   const ProposalsList = Proposals((state) => state.proposals);
+  const [loading, setLoading] = React.useState(false);
   console.log("All Proposals", ProposalsList);
 
   //========================================== Handlers ===================================================
@@ -45,6 +47,7 @@ export default function MainProposalPage() {
     console.log("this our api", process.env.NEXT_PUBLIC_API_URL);
 
     try {
+      setLoading(true);
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}proposals`, {
         method: "POST",
         mode: "cors",
@@ -53,6 +56,7 @@ export default function MainProposalPage() {
       });
       const data = await res.json();
       console.log("this is our data", data);
+      setLoading(false);
       addProposal({ ...data.data });
       toast.success("Proposal added successfully");
       setExportActive(true);
@@ -61,22 +65,8 @@ export default function MainProposalPage() {
     } catch (err) {
       console.log(err);
       toast.error("Something went wrong");
+      setLoading(false);
     }
-    // const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}proposals`, {
-    //   method: "POST",
-    //   mode: "cors",
-    //   cache: "no-store",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Accept: "application/json",
-    //   },
-    //   body: formData,
-    // });
-    // const data = await res.json();
-    // console.log("this is our data", data);
-
-    // setTitle("");
-    // setClientName("");
   };
 
   const PDFDownloader = dynamic(
@@ -148,9 +138,9 @@ export default function MainProposalPage() {
           <Button
             className={"bg-gray-600 rounded-[4px]  px-8 py-3 cursor-pointer "}
             type="submit"
+            disabled={loading}
           >
-            {" "}
-            Save Proposal
+            {loading ? "Saving..." : "Save Proposal"}
           </Button>
         </form>
       </div>

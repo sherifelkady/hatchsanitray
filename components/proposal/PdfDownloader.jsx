@@ -7,6 +7,7 @@ import { PiFilePdfLight } from "react-icons/pi";
 
 export default function PdfDownloader() {
   const proposal = Proposals((state) => state.proposal);
+  const products = Proposals((state) => state.products);
   console.log("this is our proposal", proposal);
   return (
     <>
@@ -15,6 +16,7 @@ export default function PdfDownloader() {
         document={
           <ProposalPdfDoc
             proposal={proposal}
+            products={products}
             // proposalName={Proposals.getState().proposals[0]?.project_name}
             // clientName={Proposals.getState().proposals[0]?.client_name}
           />
