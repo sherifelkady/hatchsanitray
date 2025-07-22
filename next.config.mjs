@@ -2,7 +2,7 @@
 const nextConfig = {
   transpilePackages: ["@react-pdf/renderer"],
   images: {
-    domains: ["hatchsanitary.com"], // غيّر 'example.com' للدومين اللي بتستخدمه
+    domains: ["hatchsanitary.com", "apis.hatchsanitary.com"], // غيّر 'example.com' للدومين اللي بتستخدمه
   },
 };
 

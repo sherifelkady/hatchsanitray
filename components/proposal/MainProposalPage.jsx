@@ -29,6 +29,7 @@ export default function MainProposalPage() {
   const theProposalData = Proposals((state) => state.proposal);
   const ProposalsList = Proposals((state) => state.proposals);
   const [loading, setLoading] = React.useState(false);
+  const [clientLogoUrl, setClientLogoUrl] = React.useState(null);
   console.log("All Proposals", ProposalsList);
 
   //========================================== Handlers ===================================================
@@ -58,6 +59,7 @@ export default function MainProposalPage() {
       console.log("this is our data", data);
       setLoading(false);
       addProposal({ ...data.data });
+      setClientLogoUrl(data.data.client_logo);
       toast.success("Proposal added successfully");
       setExportActive(true);
       setActiveSubmit(false);
@@ -77,6 +79,13 @@ export default function MainProposalPage() {
   );
 
   // === handle image selection ===
+
+  const handleProjectLogo = (file) => {
+    setProjectLogo(file);
+  };
+  const handleClientLogo = (file) => {
+    setClientLogo(file);
+  };
   const handleClientLogoChange = (e) => {
     setClientLogo(e.target.files[0]);
   };
@@ -127,12 +136,13 @@ export default function MainProposalPage() {
           <div className="form-grid grid grid-cols-2 gap-4">
             <div className="flex flex-col gap-3">
               <h4>Project Logo</h4>
-              <input type="file" onChange={handleProjectLogoChange} />
+              {/* <input type="file" onChange={handleProjectLogoChange} /> */}
+              <UploadInput handleFile={handleProjectLogo} />
             </div>
             <div className="flex flex-col gap-3">
               <h4>Client Logo</h4>
               {/* <UploadInput /> */}
-              <input type="file" onChange={handleClientLogoChange} />
+              <UploadInput handleFile={handleClientLogo} />
             </div>
           </div>
           <Button
@@ -147,6 +157,7 @@ export default function MainProposalPage() {
       <div className="selected-products mt-10 flex flex-col gap-4">
         <h4 className="text-lg">Selected Products</h4>
         {/* ======================================================= Selected Products ================================== */}
+
         <Table>
           <TableCaption>A list of your recent invoices.</TableCaption>
           <TableHeader>

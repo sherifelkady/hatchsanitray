@@ -3,7 +3,7 @@
 import { useState, useId } from "react";
 import { CheckCircle } from "lucide-react";
 
-export default function UploadInput() {
+export default function UploadInput({ handleFile }) {
   const [fileName, setFileName] = useState(null);
   const inputId = useId(); // <== يولّد ID فريد لكل نسخة من الكمبوننت
 
@@ -11,6 +11,7 @@ export default function UploadInput() {
     const file = e.target.files?.[0];
     if (file) {
       setFileName(file.name);
+      handleFile(file);
     }
   };
 
