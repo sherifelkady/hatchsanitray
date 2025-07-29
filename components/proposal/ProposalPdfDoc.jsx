@@ -150,17 +150,17 @@ export default function ProposalPdfDoc({ proposal, products }) {
         <View>
           {/* Header */}
           <View style={styles.tableHeader}>
+            <Text style={styles.columnHeader}>SKU (Item code)</Text>
             <Text style={styles.columnHeader}>{proposal?.client_name}</Text>
             <Text style={styles.columnHeader}>Price</Text>
-            <Text style={styles.columnHeader}>SKU</Text>
           </View>
 
           {/* Rows */}
           {products.map((product, index) => (
             <View key={index} style={styles.tableRow}>
+              <Text style={styles.column}>{product.sku}</Text>
               <Text style={styles.column}>{product.localized_name}</Text>
               <Text style={styles.column}>{product.price}</Text>
-              <Text style={styles.column}>{product.sku}</Text>
             </View>
           ))}
         </View>

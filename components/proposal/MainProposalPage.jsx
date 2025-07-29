@@ -78,6 +78,13 @@ export default function MainProposalPage() {
     }
   );
 
+  const PdfMerger = dynamic(
+    () => import("@/components/proposal/PdfMerger.jsx"),
+    {
+      ssr: false,
+    }
+  );
+
   // === handle image selection ===
 
   const handleProjectLogo = (file) => {
@@ -108,7 +115,12 @@ export default function MainProposalPage() {
       <div className="head flex justify-between items-center py-4">
         <h1 className="text-2xl">New Proposal</h1>
 
-        {exportActive && <PDFDownloader exportActive={exportActive} />}
+        {exportActive && (
+          <div className="flex gap-3">
+            <PDFDownloader exportActive={exportActive} />
+            <PdfMerger />
+          </div>
+        )}
       </div>
       {/* ================= Form ================= */}
       <div className="proposal-form">

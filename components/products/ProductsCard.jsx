@@ -12,7 +12,7 @@ export default function ProductsCard({ product }) {
   const allProducts = Proposals((state) => state.products);
   //======================================= Handlers ===============================================
   const addNewPorductHandler = () => {
-    addProduct({ ...product });
+    addProduct({ ...product, quantity: 1 });
     toast.success("Product added successfully");
     console.log("this is our product", product);
     console.log("this is our products all", allProducts);
