@@ -9,4 +9,10 @@ export const Proposals = create((set) => ({
 
   addProduct: (product) =>
     set((state) => ({ products: [...state.products, product] })),
+  changeProductQuantity: (productId, quantity) =>
+    set((state) => ({
+      products: state.products.map((product) =>
+        product.id === productId ? { ...product, quantity } : product
+      ),
+    })),
 }));

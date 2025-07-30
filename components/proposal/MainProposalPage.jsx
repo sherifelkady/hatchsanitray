@@ -27,12 +27,18 @@ export default function MainProposalPage() {
   const [activeSubmit, setActiveSubmit] = React.useState(false);
   const [quantity, setQuantity] = useState(1);
 
+  // ====================================== Global State ======================================
   const addProposal = Proposals((state) => state.addProposal);
   const theProposalData = Proposals((state) => state.proposal);
   const ProposalsList = Proposals((state) => state.proposals);
   const ProductsList = Proposals((state) => state.products);
   const [loading, setLoading] = React.useState(false);
   const [clientLogoUrl, setClientLogoUrl] = React.useState(null);
+  const changeProductQuantity = Proposals(
+    (state) => state.changeProductQuantity
+  );
+  // ====================================== Global State End ====================================
+
   console.log("All Proposals", ProposalsList);
 
   //========================================== Handlers ===================================================
@@ -95,6 +101,11 @@ export default function MainProposalPage() {
   };
   const handleClientLogo = (file) => {
     setClientLogo(file);
+  };
+  const handleProductQuantity = (id, qty) => {
+    console.log("id", id, "qty", qty);
+    if (!qty) return;
+    changeProductQuantity(id, qty);
   };
   const handleClientLogoChange = (e) => {
     setClientLogo(e.target.files[0]);
@@ -203,9 +214,18 @@ export default function MainProposalPage() {
               <TableRow key={product.id}>
                 <TableCell className="font-medium">{product?.sku}</TableCell>
                 <TableCell>{product?.localized_name}</TableCell>
-                <TableCell>{product?.price}</TableCell>
+                <TableCell>
+                  {product?.price === null ? "0" : product?.price}
+                </TableCell>
                 <TableCell className="text-right">
-                  {product?.quantity}
+                  <input
+                    type="number"
+                    value={product?.quantity ?? 0}
+                    onChange={(e) =>
+                      handleProductQuantity(product?.id, Number(e.target.value))
+                    }
+                    className="w-20 px-3 py-1.5 border border-gray-200 rounded shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
                 </TableCell>
               </TableRow>
             ))}
