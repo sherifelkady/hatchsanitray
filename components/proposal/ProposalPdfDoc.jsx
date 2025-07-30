@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     marginTop: 60,
   },
   bigLogo: {
-    width: 450,
+    width: 500,
     height: 450,
     marginBottom: 10,
     marginTop: 10,
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   rowContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 30,
+    marginBottom: 40,
     gap: 5,
   },
   box: {
@@ -74,9 +74,11 @@ const styles = StyleSheet.create({
   tableHeader: {
     flexDirection: "row",
     borderBottomWidth: 1,
-    borderColor: "#000",
-    paddingBottom: 6,
-    marginBottom: 8,
+    borderColor: "#d1d1d1",
+    paddingTop: 4,
+    paddingBottom: 4,
+    marginTop: 20,
+    marginBottom: 4,
   },
   tableRow: {
     flexDirection: "row",
@@ -150,9 +152,10 @@ export default function ProposalPdfDoc({ proposal, products }) {
         <View>
           {/* Header */}
           <View style={styles.tableHeader}>
-            <Text style={styles.columnHeader}>SKU (Item code)</Text>
-            <Text style={styles.columnHeader}>{proposal?.client_name}</Text>
+            <Text style={styles.columnHeader}>Item code</Text>
+            <Text style={styles.columnHeader}>Product Name</Text>
             <Text style={styles.columnHeader}>Price</Text>
+            <Text style={styles.columnHeader}>Qty</Text>
           </View>
 
           {/* Rows */}
@@ -161,8 +164,15 @@ export default function ProposalPdfDoc({ proposal, products }) {
               <Text style={styles.column}>{product.sku}</Text>
               <Text style={styles.column}>{product.localized_name}</Text>
               <Text style={styles.column}>{product.price}</Text>
+              <Text style={styles.column}>{product?.quantity}</Text>
             </View>
           ))}
+          <View style={styles.tableRow}>
+            <Text style={styles.column}>Grand Total</Text>
+            <Text style={styles.column}></Text>
+            <Text style={styles.column}></Text>
+            <Text style={styles.column}>455</Text>
+          </View>
         </View>
       </Page>
     </Document>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,9 +25,12 @@ export default function MainProposalPage() {
   const [clientLogo, setClientLogo] = React.useState(null);
   const [exportActive, setExportActive] = React.useState(false);
   const [activeSubmit, setActiveSubmit] = React.useState(false);
+  const [quantity, setQuantity] = useState(1);
+
   const addProposal = Proposals((state) => state.addProposal);
   const theProposalData = Proposals((state) => state.proposal);
   const ProposalsList = Proposals((state) => state.proposals);
+  const ProductsList = Proposals((state) => state.products);
   const [loading, setLoading] = React.useState(false);
   const [clientLogoUrl, setClientLogoUrl] = React.useState(null);
   console.log("All Proposals", ProposalsList);
@@ -71,12 +74,12 @@ export default function MainProposalPage() {
     }
   };
 
-  const PDFDownloader = dynamic(
-    () => import("@/components/proposal/PdfDownloader.jsx"),
-    {
-      ssr: false,
-    }
-  );
+  // const PDFDownloader = dynamic(
+  //   () => import("@/components/proposal/PdfDownloader.jsx"),
+  //   {
+  //     ssr: false,
+  //   }
+  // );
 
   const PdfMerger = dynamic(
     () => import("@/components/proposal/PdfMerger.jsx"),
@@ -117,7 +120,7 @@ export default function MainProposalPage() {
 
         {exportActive && (
           <div className="flex gap-3">
-            <PDFDownloader exportActive={exportActive} />
+            {/* <PDFDownloader exportActive={exportActive} /> */}
             <PdfMerger />
           </div>
         )}
@@ -157,6 +160,21 @@ export default function MainProposalPage() {
               <UploadInput handleFile={handleClientLogo} />
             </div>
           </div>
+
+          <div className="form-grid grid grid-cols-2 gap-4">
+            <input
+              type="text"
+              placeholder="Client Phone"
+              // onChange={(e) => setTitle(e.target.value)}
+              className="border-gray-200 border p-3 rounded w-[100%] h-11"
+            />
+            <input
+              type="text"
+              placeholder="Client Address"
+              className="border-gray-200 border p-3 rounded w-[100%] h-11"
+              // onChange={(e) => setClientName(e.target.value)}
+            />
+          </div>
           <Button
             className={"bg-gray-600 rounded-[4px]  px-8 py-3 cursor-pointer "}
             type="submit"
@@ -171,21 +189,31 @@ export default function MainProposalPage() {
         {/* ======================================================= Selected Products ================================== */}
 
         <Table>
-          <TableCaption>A list of your recent invoices.</TableCaption>
+          <TableCaption>A list of your Selected Products</TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[100px]">Invoice</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Method</TableHead>
-              <TableHead className="text-right">Amount</TableHead>
+              <TableHead className="w-[100px]">Item Code</TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead>Price</TableHead>
+              <TableHead className="text-right">Quantity</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
+            {ProductsList?.map((product) => (
+              <TableRow key={product.id}>
+                <TableCell className="font-medium">{product?.sku}</TableCell>
+                <TableCell>{product?.localized_name}</TableCell>
+                <TableCell>{product?.price}</TableCell>
+                <TableCell className="text-right">
+                  {product?.quantity}
+                </TableCell>
+              </TableRow>
+            ))}
             <TableRow>
-              <TableCell className="font-medium">INV001</TableCell>
-              <TableCell>Paid</TableCell>
-              <TableCell>Credit Card</TableCell>
-              <TableCell className="text-right">$250.00</TableCell>
+              <TableCell className="font-medium">Total</TableCell>
+              <TableCell></TableCell>
+              <TableCell></TableCell>
+              <TableCell className="text-right">{}</TableCell>
             </TableRow>
           </TableBody>
         </Table>

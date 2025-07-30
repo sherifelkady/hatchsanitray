@@ -78,12 +78,12 @@ export default function PdfMerger() {
       disabled={isLoading}
       className={`flex text-white justify-center items-center gap-3 rounded-[4px] px-8 py-3 cursor-pointer ${
         isLoading
-          ? "bg-blue-400 cursor-not-allowed"
-          : "bg-blue-700 hover:bg-blue-800"
+          ? "bg-gray-400 cursor-not-allowed"
+          : "bg-gray-700 hover:bg-gray-800"
       }`}
     >
       <PiFilePdfLight size={20} />
-      {isLoading ? "Merging PDFs..." : "Export Merged PDF"}
+      {isLoading ? "Making PDF..." : "Export PDF"}
     </button>
   );
 }
