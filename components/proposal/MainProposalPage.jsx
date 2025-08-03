@@ -17,6 +17,7 @@ import { Proposals } from "@/store/proposals-store";
 import dynamic from "next/dynamic";
 import { toast } from "sonner";
 import Image from "next/image";
+import { TiDeleteOutline } from "react-icons/ti";
 
 export default function MainProposalPage() {
   const [title, setTitle] = React.useState("");
@@ -32,6 +33,7 @@ export default function MainProposalPage() {
   const theProposalData = Proposals((state) => state.proposal);
   const ProposalsList = Proposals((state) => state.proposals);
   const ProductsList = Proposals((state) => state.products);
+  const removeProduct = Proposals((state) => state.removeProduct);
   const [loading, setLoading] = React.useState(false);
   const [clientLogoUrl, setClientLogoUrl] = React.useState(null);
   const changeProductQuantity = Proposals(
@@ -58,9 +60,12 @@ export default function MainProposalPage() {
 
     try {
       setLoading(true);
+      console.log(
+        "this is our api",
+        `${process.env.NEXT_PUBLIC_API_URL}proposals`
+      );
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}proposals`, {
         method: "POST",
-        mode: "cors",
         cache: "no-store",
         body: formData,
       });
@@ -106,6 +111,10 @@ export default function MainProposalPage() {
     console.log("id", id, "qty", qty);
     if (!qty) return;
     changeProductQuantity(id, qty);
+  };
+  const handleDeleteProduct = (id) => {
+    removeProduct(id);
+    toast.warning("Product Delete successfully");
   };
   const handleClientLogoChange = (e) => {
     setClientLogo(e.target.files[0]);
@@ -172,7 +181,7 @@ export default function MainProposalPage() {
             </div>
           </div>
 
-          <div className="form-grid grid grid-cols-2 gap-4">
+          {/* <div className="form-grid grid grid-cols-2 gap-4">
             <input
               type="text"
               placeholder="Client Phone"
@@ -185,7 +194,7 @@ export default function MainProposalPage() {
               className="border-gray-200 border p-3 rounded w-[100%] h-11"
               // onChange={(e) => setClientName(e.target.value)}
             />
-          </div>
+          </div> */}
           <Button
             className={"bg-gray-600 rounded-[4px]  px-8 py-3 cursor-pointer "}
             type="submit"
@@ -203,6 +212,7 @@ export default function MainProposalPage() {
           <TableCaption>A list of your Selected Products</TableCaption>
           <TableHeader>
             <TableRow>
+              <TableHead>#</TableHead>
               <TableHead className="w-[100px]">Item Code</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Price</TableHead>
@@ -212,6 +222,13 @@ export default function MainProposalPage() {
           <TableBody>
             {ProductsList?.map((product) => (
               <TableRow key={product.id}>
+                <TableCell>
+                  <TiDeleteOutline
+                    size={20}
+                    className="hover:text-red-400 text-gray-400 cursor-pointer"
+                    onClick={() => handleDeleteProduct(product?.id)}
+                  />
+                </TableCell>
                 <TableCell className="font-medium">{product?.sku}</TableCell>
                 <TableCell>{product?.localized_name}</TableCell>
                 <TableCell>
