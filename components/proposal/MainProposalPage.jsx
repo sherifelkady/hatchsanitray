@@ -19,7 +19,7 @@ import { toast } from "sonner";
 import Image from "next/image";
 import { TiDeleteOutline } from "react-icons/ti";
 
-export default function MainProposalPage() {
+export default function MainProposalPageOLD() {
   const [title, setTitle] = React.useState("");
   const [clientName, setClientName] = React.useState("");
   const [projectLogo, setProjectLogo] = React.useState(null);
@@ -49,9 +49,6 @@ export default function MainProposalPage() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (!title) return;
-
-    console.log("this is our state", Proposals.getState().proposals);
-    // upload file in client
     const formData = new FormData();
     formData.append("project_name", title);
     formData.append("client_name", clientName);
@@ -64,6 +61,9 @@ export default function MainProposalPage() {
     console.log("this is our formData", formData);
     console.log("this our api", process.env.NEXT_PUBLIC_API_URL);
 
+    console.log("this is our state", Proposals.getState().proposals);
+    // upload file in client
+
     try {
       setLoading(true);
       console.log(
@@ -72,11 +72,23 @@ export default function MainProposalPage() {
       );
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}proposals`, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         cache: "no-store",
-        body: formData,
+        body: JSON.stringify({
+          project_name: title,
+          client_name: clientName,
+          project_logo: projectLogo,
+          client_logo: clientLogo,
+          contact_name: clientName,
+          contact_address: customerAddress,
+          contact_email: "customerEmail@gmail.com",
+          contact_phone: customerphone,
+        }),
       });
       const data = await res.json();
-      console.log("this is our data", data);
+      console.log("this is our data", res);
       setLoading(false);
       addProposal({ ...data.data });
       setClientLogoUrl(data.data.client_logo);
@@ -85,7 +97,7 @@ export default function MainProposalPage() {
       setActiveSubmit(false);
       console.log("this is our theProposalData", theProposalData);
     } catch (err) {
-      console.log(err);
+      console.log("this is our error", err);
       toast.error("Something went wrong");
       setLoading(false);
     }
