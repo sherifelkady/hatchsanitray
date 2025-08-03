@@ -24,6 +24,8 @@ export default function MainProposalPage() {
   const [clientName, setClientName] = React.useState("");
   const [projectLogo, setProjectLogo] = React.useState(null);
   const [clientLogo, setClientLogo] = React.useState(null);
+  const [customerphone, setCustomerPhone] = React.useState(null);
+  const [customerAddress, setCustomerAddress] = React.useState(null);
   const [exportActive, setExportActive] = React.useState(false);
   const [activeSubmit, setActiveSubmit] = React.useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -55,6 +57,10 @@ export default function MainProposalPage() {
     formData.append("client_name", clientName);
     formData.append("project_logo", projectLogo);
     formData.append("client_logo", clientLogo);
+    formData.append("contact_name", clientName);
+    formData.append("contact_address", customerAddress);
+    formData.append("contact_email", "customerEmail@gmail.com");
+    formData.append("contact_phone", customerphone);
     console.log("this is our formData", formData);
     console.log("this our api", process.env.NEXT_PUBLIC_API_URL);
 
@@ -181,20 +187,20 @@ export default function MainProposalPage() {
             </div>
           </div>
 
-          {/* <div className="form-grid grid grid-cols-2 gap-4">
+          <div className="form-grid grid grid-cols-2 gap-4">
             <input
               type="text"
               placeholder="Client Phone"
-              // onChange={(e) => setTitle(e.target.value)}
+              onChange={(e) => setCustomerPhone(e.target.value)}
               className="border-gray-200 border p-3 rounded w-[100%] h-11"
             />
             <input
               type="text"
               placeholder="Client Address"
               className="border-gray-200 border p-3 rounded w-[100%] h-11"
-              // onChange={(e) => setClientName(e.target.value)}
+              onChange={(e) => setCustomerAddress(e.target.value)}
             />
-          </div> */}
+          </div>
           <Button
             className={"bg-gray-600 rounded-[4px]  px-8 py-3 cursor-pointer "}
             type="submit"
