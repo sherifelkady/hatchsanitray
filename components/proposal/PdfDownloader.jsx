@@ -5,10 +5,13 @@ import ProposalPdfDoc from "@/components/proposal/ProposalPdfDoc";
 import { Proposals } from "@/store/proposals-store";
 import { PiFilePdfLight } from "react-icons/pi";
 
-export default function PdfDownloader() {
+export default async function PdfDownloader() {
   const proposal = Proposals((state) => state.proposal);
   const products = Proposals((state) => state.products);
+
   console.log("this is our proposal", proposal);
+  console.log("this is our grandTotal", grandTotal);
+
   return (
     <>
       <PDFDownloadLink

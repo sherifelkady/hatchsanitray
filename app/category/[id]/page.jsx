@@ -7,7 +7,7 @@ export default async function page({ params }) {
   const { id } = await params;
   console.log("this is our id", id);
   const getProducts = await fetch(
-    `${process.env.API_URL}sub-categories/69/products`,
+    `${process.env.API_URL}sub-categories/${id}/products`,
     {
       method: "GET",
       cache: "no-store",

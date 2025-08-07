@@ -19,7 +19,7 @@ import { toast } from "sonner";
 import Image from "next/image";
 import { TiDeleteOutline } from "react-icons/ti";
 
-export default function MainProposalPageOLD() {
+export default function MainProposalPage() {
   const [title, setTitle] = React.useState("");
   const [clientName, setClientName] = React.useState("");
   const [projectLogo, setProjectLogo] = React.useState(null);
@@ -29,6 +29,7 @@ export default function MainProposalPageOLD() {
   const [exportActive, setExportActive] = React.useState(false);
   const [activeSubmit, setActiveSubmit] = React.useState(false);
   const [quantity, setQuantity] = useState(1);
+  // const [grandTotalCheck, setGrandTotalCheck] = useState(false);
 
   // ====================================== Global State ======================================
   const addProposal = Proposals((state) => state.addProposal);
@@ -41,6 +42,8 @@ export default function MainProposalPageOLD() {
   const changeProductQuantity = Proposals(
     (state) => state.changeProductQuantity
   );
+  const grandTotalCheck = Proposals((state) => state.grandTotalCheck);
+  const checkGrandTotal = Proposals((state) => state.checkGrandTotal);
   // ====================================== Global State End ====================================
 
   console.log("All Proposals", ProposalsList);
@@ -50,19 +53,27 @@ export default function MainProposalPageOLD() {
     e.preventDefault();
     if (!title) return;
     const formData = new FormData();
+
     formData.append("project_name", title);
-    formData.append("client_name", clientName);
     formData.append("project_logo", projectLogo);
     formData.append("client_logo", clientLogo);
-    formData.append("contact_name", clientName);
+    formData.append("client_name", clientName);
+    formData.append("contact_name", "sdfsdfdfdsfdsfsdf");
     formData.append("contact_address", customerAddress);
     formData.append("contact_email", "customerEmail@gmail.com");
     formData.append("contact_phone", customerphone);
     console.log("this is our formData", formData);
+
+    console.log(
+      "this is project name from formData",
+      formData.get("client_name")
+    );
     console.log("this our api", process.env.NEXT_PUBLIC_API_URL);
 
     console.log("this is our state", Proposals.getState().proposals);
     // upload file in client
+
+    console.log("this is our grand total checked", grandTotalCheck);
 
     try {
       setLoading(true);
@@ -70,32 +81,27 @@ export default function MainProposalPageOLD() {
         "this is our api",
         `${process.env.NEXT_PUBLIC_API_URL}proposals`
       );
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}proposals`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        body: JSON.stringify({
-          project_name: title,
-          client_name: clientName,
-          project_logo: projectLogo,
-          client_logo: clientLogo,
-          contact_name: clientName,
-          contact_address: customerAddress,
-          contact_email: "customerEmail@gmail.com",
-          contact_phone: customerphone,
-        }),
-      });
-      const data = await res.json();
-      console.log("this is our data", res);
-      setLoading(false);
-      addProposal({ ...data.data });
-      setClientLogoUrl(data.data.client_logo);
-      toast.success("Proposal added successfully");
-      setExportActive(true);
-      setActiveSubmit(false);
-      console.log("this is our theProposalData", theProposalData);
+      if ([...formData.entries()].length > 0) {
+        console.log("this is our formData", [...formData.entries()]);
+
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}proposals`, {
+          method: "POST",
+          headers: {
+            accept: "application/json",
+          },
+          cache: "no-store",
+          body: formData,
+        });
+        const data = await res.json();
+        console.log("this is our data", res);
+        setLoading(false);
+        addProposal({ ...data.data });
+        setClientLogoUrl(data.data.client_logo);
+        toast.success("Proposal added successfully");
+        setExportActive(true);
+        setActiveSubmit(false);
+        console.log("this is our theProposalData", theProposalData);
+      }
     } catch (err) {
       console.log("this is our error", err);
       toast.error("Something went wrong");
@@ -141,9 +147,7 @@ export default function MainProposalPageOLD() {
   const handleProjectLogoChange = (e) => {
     setProjectLogo(e.target.files[0]);
   };
-  const handleSubmit = () => {
-    setActiveSubmit(true);
-  };
+
   //========================================== Handlers End ===================================================
 
   useEffect(() => {
@@ -151,6 +155,9 @@ export default function MainProposalPageOLD() {
       handleFormSubmit();
     }
   }, [activeSubmit]);
+  useEffect(() => {
+    console.log("this is grand total checked", grandTotalCheck);
+  }, [grandTotalCheck]);
   return (
     <main className="bg-white xl:w-full w-5/6 p-5">
       <div className="head flex justify-between items-center py-4">
@@ -174,6 +181,7 @@ export default function MainProposalPageOLD() {
           <div className="form-grid grid grid-cols-2 gap-4">
             <input
               type="text"
+              name="title"
               placeholder="Proposal Title"
               onChange={(e) => setTitle(e.target.value)}
               className="border-gray-200 border p-3 rounded w-[100%] h-11"
@@ -181,6 +189,7 @@ export default function MainProposalPageOLD() {
             <input
               type="text"
               placeholder="Client Name"
+              name="clientName"
               className="border-gray-200 border p-3 rounded w-[100%] h-11"
               onChange={(e) => setClientName(e.target.value)}
             />
@@ -202,16 +211,37 @@ export default function MainProposalPageOLD() {
           <div className="form-grid grid grid-cols-2 gap-4">
             <input
               type="text"
-              placeholder="Client Phone"
+              name="clientPhone"
+              placeholder="Contact person Phone"
               onChange={(e) => setCustomerPhone(e.target.value)}
               className="border-gray-200 border p-3 rounded w-[100%] h-11"
             />
             <input
               type="text"
               placeholder="Client Address"
+              name="clientAddress"
               className="border-gray-200 border p-3 rounded w-[100%] h-11"
               onChange={(e) => setCustomerAddress(e.target.value)}
             />
+          </div>
+          <div className="form-grid grid grid-cols-2 gap-4">
+            <input
+              type="text"
+              name="ContactPersonName"
+              placeholder="Contact Person Name"
+              onChange={(e) => setCustomerPhone(e.target.value)}
+              className="border-gray-200 border p-3 rounded w-[100%] h-11"
+            />
+            <div className="flex items-center gap-4 justify-start">
+              <label htmlFor="grandTotal"> Grand Total</label>
+              <input
+                id="grandTotal"
+                type="checkbox"
+                className="h-5 w-5 rounded-md accent-emerald-600 border border-emerald-400  focus:none focus:outline-none transition duration-150 ease-in-out"
+                checked={grandTotalCheck}
+                onChange={() => checkGrandTotal((prev) => !prev)}
+              />
+            </div>
           </div>
           <Button
             className={"bg-gray-600 rounded-[4px]  px-8 py-3 cursor-pointer "}
@@ -268,7 +298,13 @@ export default function MainProposalPageOLD() {
               <TableCell className="font-medium">Total</TableCell>
               <TableCell></TableCell>
               <TableCell></TableCell>
-              <TableCell className="text-right">{}</TableCell>
+              <TableCell className="text-right">
+                {ProductsList.reduce((acc, product) => {
+                  const quantity = product.quantity ?? 1;
+                  const price = Number(product.price ?? 0);
+                  return acc + price * quantity;
+                }, 0)}
+              </TableCell>
             </TableRow>
           </TableBody>
         </Table>
